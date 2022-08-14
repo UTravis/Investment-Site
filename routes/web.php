@@ -36,4 +36,6 @@ Route::middleware('user.session')->group(function() {
     //Logout
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
+    //Go To Credit Wallet Page
+    Route::get('/credit-wallet', [PageController::class, 'creditWallet'])->name('wallet.credit');
 });

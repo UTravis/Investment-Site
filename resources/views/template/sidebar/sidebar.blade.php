@@ -10,6 +10,14 @@
                 </p>
             </a>
         </li>
+        <li class="nav-item menu-open">
+            <a href="{{ route('wallet.credit') }}" class="nav-link">
+                <i class="nav-icon fa fa-money" aria-hidden="true"></i>
+                <p>
+                    Credit Wallet
+                </p>
+            </a>
+        </li>
         <li class="nav-item menu-open mt-5">
             <a href="{{ route('logout') }}" class="nav-link">
                 <i class="fas fa-door-open    "></i>
