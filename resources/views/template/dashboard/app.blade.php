@@ -171,6 +171,8 @@
 </div>
 <!-- ./wrapper -->
 
+@stack('scripts')
+
 <!-- REQUIRED SCRIPTS -->
 {{-- Font Awesome --}}
 <script src="https://use.fontawesome.com/d0da85019a.js"></script>

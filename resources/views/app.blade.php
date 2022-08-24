@@ -32,7 +32,7 @@
                             <span class="info-box-text">Wallet</span>
                             <span class="info-box-number">
                                 <small>₦</small>
-                                0.00
+                                {{$userWallet->amount}}.00
                             </span>
                         </div>
                         <!-- /.info-box-content -->

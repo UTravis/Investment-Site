@@ -43,6 +43,9 @@
                             </div>
                         </div>
                     </div>
+                    @error('email')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
                     <div class="input-group mb-3">
                         <input type="password" class="form-control" placeholder="Password" name="password" required>
                         <div class="input-group-append">
@@ -51,9 +54,8 @@
                             </div>
                         </div>
                     </div>
-
                     @error('password')
-                        <div class="alert alert-danger">{{ $message }}</div>
+                        <small class="text-danger">{{ $message }}</small>
                     @enderror
 
                     <div class="input-group mb-3">

@@ -17,7 +17,7 @@ class CreateFundsTable extends Migration
             $table->id();
             $table->string('user_id');
             $table->integer('amount')->default(0.00);
-            $table->string('currency');
+            $table->string('currency')->default('NGN');
             $table->timestamps();
         });
     }

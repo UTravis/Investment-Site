@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Funds;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -24,6 +25,14 @@ class LoginController extends Controller
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->save();
+
+        //creates a wallet for newly registered user
+        if($user)
+        {
+            $newWallet = new Funds();
+            $newWallet->user_id = $user->id;
+            $newWallet->save();
+        }
 
         //Redirecting back to the register page with a flash message
         return redirect()->back()->with('registered', 'You have successfully created an account, please log in');

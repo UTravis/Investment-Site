@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\Payments\VerifyPaymentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,4 +39,10 @@ Route::middleware('user.session')->group(function() {
 
     //Go To Credit Wallet Page
     Route::get('/credit-wallet', [PageController::class, 'creditWallet'])->name('wallet.credit');
+
+    //PAYMENTS RELATED ROUTES\\
+
+    //****Verify Payments **\\
+    Route::get('verify-payment/{reference}', [VerifyPaymentController::class, 'verifyPayment']);
+    //END\\
 });

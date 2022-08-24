@@ -13,7 +13,8 @@ class PageController extends Controller
     {
         //getting the logged in user details
         $user = UserController::User();
-        return view('app', compact('user'));
+        $userWallet = User::findOrFail($user->id)->fund; //user wallet detials
+        return view('app', compact('user', 'userWallet'));
     }
 
     //Takes you to register page
