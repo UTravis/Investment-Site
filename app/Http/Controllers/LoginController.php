@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Funds;
 use App\Models\User;
+use App\Models\Funds;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Mail\MailController;
 use Symfony\Component\CssSelector\Node\FunctionNode;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class LoginController extends Controller
 {
@@ -24,18 +26,37 @@ class LoginController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
+        $user->verification_code = sha1(time());
         $user->save();
 
-        //creates a wallet for newly registered user
+        //creates a wallet for newly registered user and send verification mail
         if($user)
         {
             $newWallet = new Funds();
             $newWallet->user_id = $user->id;
             $newWallet->save();
+
+            //send verification mail
+            MailController::sendVerificationMail($user->name, $user->email, $user->verification_code);
         }
 
         //Redirecting back to the register page with a flash message
-        return redirect()->back()->with('registered', 'You have successfully created an account, please log in');
+        return redirect()->back()->with('registered', 'Please check your mail to verify your email address!');
+    }
+
+    //verify user
+    public function verifyUser(Request $request)
+    {
+        $verificationCode = FacadesRequest::get('code');
+        $user = User::where('verification_code', $verificationCode)->first();
+
+        if($user !== null)
+        {
+            $user->is_verified = 1;
+            $user->save();
+
+            return redirect('/login')->with( session()->flash('verified', 'Your account was verified successfully. Please Login!!!') );
+        }
     }
 
 
@@ -48,6 +69,12 @@ class LoginController extends Controller
         ]);
 
         $user = User::where('email', $request->email)->first();
+
+        //checks if the user is verified
+        if($user->is_verified !== 1)
+        {
+            return redirect()->back()->with('error', 'Your account is not yet verified, please check your email');
+        }
 
         //If user not found or password dosen't match
         if(!$user || ! Hash::check($request->password, $user->password))

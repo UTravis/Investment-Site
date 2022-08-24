@@ -8,7 +8,7 @@
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
-            <strong>{{session()->get('registered')}}</strong> <a href="{{route('login.show')}}" style="font-weight: bold">Here</a>
+            <strong>{{session()->get('registered')}}</strong>
         </div>
     @endif
 

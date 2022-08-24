@@ -9,6 +9,13 @@
             </button>
             <strong>{{session()->get('error')}}</strong>
         </div>
+    @elseif (session()->has('verified'))
+        <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+            <strong>{{session()->get('verified')}}</strong>
+        </div>
     @endif
 
     <script>

@@ -24,9 +24,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/register', [PageController::class, 'register'])->name('register.show');
 Route::post('/register', [LoginController::class, 'register'])->name('register');
 
+//verify user
+Route::get('verification', [LoginController::class, 'verifyUser']);
+
 //Login
 Route::get('/login', [PageController::class, 'login'])->name('login.show');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
+
 
 //Logged in user session middleware
 Route::middleware('user.session')->group(function() {
@@ -40,9 +44,10 @@ Route::middleware('user.session')->group(function() {
     //Go To Credit Wallet Page
     Route::get('/credit-wallet', [PageController::class, 'creditWallet'])->name('wallet.credit');
 
-    //PAYMENTS RELATED ROUTES\\
+    //*******************PAYMENTS RELATED ROUTES*****************\\
 
-    //****Verify Payments **\\
-    Route::get('verify-payment/{reference}', [VerifyPaymentController::class, 'verifyPayment']);
-    //END\\
+        //****Verify Payments **\\
+        Route::get('verify-payment/{reference}', [VerifyPaymentController::class, 'verifyPayment']);
+
+    //**********************END*************************\\
 });
