@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\PageController;
-use App\Http\Controllers\Payments\VerifyPaymentController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\API\NotificationController;
+use App\Http\Controllers\Payments\VerifyPaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +34,7 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 
 
 //Logged in user session middleware
-Route::middleware('user.session')->group(function() {
+Route::middleware('auth')->group(function() {
 
     //Dashboard
     Route::get('/', [PageController::class, 'home'])->name('home');
@@ -43,6 +44,9 @@ Route::middleware('user.session')->group(function() {
 
     //Go To Credit Wallet Page
     Route::get('/credit-wallet', [PageController::class, 'creditWallet'])->name('wallet.credit');
+
+    //Get Notifications for user
+    Route::get('get-notifications', [NotificationController::class, 'notifications']);
 
     //*******************PAYMENTS RELATED ROUTES*****************\\
 

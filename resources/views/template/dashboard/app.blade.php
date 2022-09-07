@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Investment System</title>
-
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome Icons -->
@@ -68,25 +68,16 @@
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-bell"></i>
+            <i class="fa-sharp fa-solid fa-bell"></i>
+            {{-- <i class="far fa-bell"></i> --}}
           <span class="badge badge-warning navbar-badge">15</span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <span class="dropdown-item dropdown-header">15 Notifications</span>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
+          <a href="#" class="dropdown-item" v-for="message in notifications">
+            <i class="fas fa-envelope mr-2"></i> @{{message.message}}
             <span class="float-right text-muted text-sm">3 mins</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
           </a>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
@@ -146,7 +137,7 @@
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div id="app" class="content-wrapper">
 
     <!-- Main content -->
     @yield('content')
@@ -171,7 +162,12 @@
 </div>
 <!-- ./wrapper -->
 
+{{-- SCRIPT FOR BROADCASTING NOTIFICATIONS --}}
+<script src="{{asset('js/app.js')}}"></script>
+{{-- SCRIPT FOR BROADCASTING NOTIFICATIONS END --}}
+
 @stack('scripts')
+
 
 <!-- REQUIRED SCRIPTS -->
 {{-- Font Awesome --}}

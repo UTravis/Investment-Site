@@ -7,8 +7,10 @@ use App\Models\Funds;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Mail\MailController;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\CssSelector\Node\FunctionNode;
 use Illuminate\Support\Facades\Request as FacadesRequest;
+
 
 class LoginController extends Controller
 {
@@ -63,39 +65,40 @@ class LoginController extends Controller
     //Login
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
         ]);
 
-        $user = User::where('email', $request->email)->first();
-
-        //checks if the user is verified
-        if($user->is_verified !== 1)
+        if(Auth::attempt($credentials))
         {
-            return redirect()->back()->with('error', 'Your account is not yet verified, please check your email');
+            if(Auth::user()->is_verified !== 1)
+            {
+                return redirect()->back()->with('error', 'Your account is not yet verified, please check your email');
+            }
+
+            $request->session()->regenerate();
+
+            return redirect()->intended('/');
         }
 
-        //If user not found or password dosen't match
-        if(!$user || ! Hash::check($request->password, $user->password))
-        {
-            return redirect()->back()->with('error', 'Did not find your account');
-        }
+        return redirect()->back()->with('error', 'Did not find your account.');
 
-        //If user found and password match
-
-            //setting user login session
-            $request->session()->put('user_session', $request->email);
-            //redirecting to dashboard
-            return redirect('/');
     }
 
     //Logout
-    public function logout()
+    public function logout(Request $request)
     {
         //Simply distroying user session
-        session()->flush();
+        // session()->flush();
         //redirects you to login page
+
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
         return redirect('/login');
     }
 }

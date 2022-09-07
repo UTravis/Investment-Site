@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Payments;
 
+use App\Events\WalletCredit;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Controller;
 use App\Models\Funds;
+use App\Models\Notifications;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VerifyPaymentController extends Controller
 {
@@ -42,7 +45,7 @@ class VerifyPaymentController extends Controller
             if( $response->message == 'Verification successful' )
             {
                 //getting the user id\\
-                $userId = UserController::User()->id;
+                $userId = Auth::user()->id;
 
                 //getting the amount paid in naria\\
                 $amountPayedKobo = $response->data->amount; //kobo
@@ -59,6 +62,21 @@ class VerifyPaymentController extends Controller
                         'amount' => $newBalance,
                         'currency' => $response->data->authorization->country_code //getting the currency
                     ]);
+
+                    //This contains data for the in-app notification functionality
+                    $notificationData = [
+                        'userID' => $userId,
+                        'message' => 'Your wallet was credited with ₦' . $amountPayed
+                    ];
+
+                    //Storing data on the notification table
+                    $notification = new Notifications();
+                    $notification->message = $notificationData['message'];
+                    $notification->user_id = $notificationData['userID'];
+                    $notification->save();
+
+                    //calling event to trigger notification
+                    event(new WalletCredit($notificationData));
                 } else
                 {
                     //new instanciation of the Funds model

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Auth\UserController;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PageController extends Controller
 {
@@ -12,9 +12,8 @@ class PageController extends Controller
     public function home()
     {
         //getting the logged in user details
-        $user = UserController::User();
-        $userWallet = User::findOrFail($user->id)->fund; //user wallet detials
-        return view('app', compact('user', 'userWallet'));
+        $userWallet = User::findOrFail(Auth::user()->id)->fund; //user wallet detials
+        return view('app', compact('userWallet'));
     }
 
     //Takes you to register page
@@ -32,7 +31,7 @@ class PageController extends Controller
     //Takes you to the credit wallet page
     public function creditWallet()
     {
-        $user = UserController::User(); //getting the authenticated user
+        $user = Auth::user(); //getting the authenticated user
         $userWallet = User::findOrFail($user->id)->fund; //user wallet detials
         return view('pages.wallet.credit', compact('userWallet', 'user'));
     }

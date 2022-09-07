@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Welcome {{ $user->name }} <i class="fa fa-handshake-o" aria-hidden="true"></i> </h1>
+                    <h1 class="m-0">Welcome {{ Auth::user()->name }} <i class="fa fa-handshake-o" aria-hidden="true"></i> </h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
