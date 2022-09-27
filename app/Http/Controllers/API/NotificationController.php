@@ -21,4 +21,14 @@ class NotificationController extends Controller
 
         return response()->json($notifications);
     }
+
+    public function readNotification($id){
+        //marking the notification with id to read
+        $notification = Notifications::findOrFail($id);
+        $notification->is_read = 1;
+        $notification->save();
+
+        //retreving notification message based on notification id
+        return redirect('/credit-wallet')->with('notify', $notification->message);
+    }
 }

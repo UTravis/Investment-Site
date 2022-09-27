@@ -5374,7 +5374,8 @@ Vue.component('example-component', (__webpack_require__(/*! ./components/Example
 var app = new Vue({
   el: '#app',
   data: {
-    notifications: {}
+    notifications: {},
+    noMsgs: ''
   },
   mounted: function mounted() {
     this.getMessage(), this.listen();
@@ -5392,9 +5393,20 @@ var app = new Vue({
     listen: function listen() {
       var _this2 = this;
 
-      Echo["private"]('new-credit.{{auth()->id}}').listen('WalletCredit', function (e) {
+      Echo["private"]('new-credit.{{ auth()->id }}').listen('WalletCredit', function (e) {
         _this2.notifications.unshift(e);
       });
+    },
+    markAsRead: function markAsRead() {
+      var id = event.target.getAttribute('href');
+      var url = "notification/read/".concat(id);
+      window.location = url;
+    }
+  },
+  computed: {
+    getNoMessages: function getNoMessages() {
+      this.noMsgs = this.notifications.length;
+      return this.noMsgs;
     }
   }
 });

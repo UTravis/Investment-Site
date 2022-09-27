@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 </head>
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
-<div class="wrapper">
+<div id="app" class="wrapper">
 
   <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
@@ -68,14 +68,13 @@
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
-            <i class="fa-sharp fa-solid fa-bell"></i>
-            {{-- <i class="far fa-bell"></i> --}}
-          <span class="badge badge-warning navbar-badge">15</span>
+            <i class="far fa-bell"></i>
+          <span class="badge badge-danger">@{{noMsgs}}</span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">15 Notifications</span>
+          <span class="dropdown-item dropdown-header">@{{noMsgs}} Notifications</span>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item" v-for="message in notifications">
+          <a :href='message.id' class="dropdown-item" v-on:click.prevent="markAsRead" v-for="message in notifications">
             <i class="fas fa-envelope mr-2"></i> @{{message.message}}
             <span class="float-right text-muted text-sm">3 mins</span>
           </a>
@@ -137,7 +136,7 @@
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
-  <div id="app" class="content-wrapper">
+  <div class="content-wrapper">
 
     <!-- Main content -->
     @yield('content')
@@ -168,7 +167,6 @@
 
 @stack('scripts')
 
-
 <!-- REQUIRED SCRIPTS -->
 {{-- Font Awesome --}}
 <script src="https://use.fontawesome.com/d0da85019a.js"></script>
@@ -196,5 +194,7 @@
 <script src="{{asset('dist/js/demo.js')}}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{asset('dist/js/pages/dashboard2.js')}}"></script>
+
+
 </body>
 </html>

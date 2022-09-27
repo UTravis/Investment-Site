@@ -32,7 +32,8 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 const app = new Vue({
     el: '#app',
     data: {
-        notifications: {}
+        notifications: {},
+        noMsgs: ''
     },
     mounted() {
         this.getMessage(),
@@ -51,6 +52,17 @@ const app = new Vue({
             Echo.private('new-credit.{{ auth()->id }}').listen('WalletCredit', (e) => {
                 this.notifications.unshift(e)
             })
+        },
+        markAsRead() {
+            var id = event.target.getAttribute('href');
+            var url = `notification/read/${id}`;
+            window.location = url;
+        }
+    },
+    computed: {
+        getNoMessages(){
+            this.noMsgs = this.notifications.length;
+            return this.noMsgs
         }
     }
 });

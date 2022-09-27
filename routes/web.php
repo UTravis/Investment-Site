@@ -48,6 +48,8 @@ Route::middleware('auth')->group(function() {
     //Get Notifications for user
     Route::get('get-notifications', [NotificationController::class, 'notifications']);
 
+    Route::get('notification/read/{id}', [NotificationController::class, 'readNotification']);
+
     //*******************PAYMENTS RELATED ROUTES*****************\\
 
         //****Verify Payments **\\
